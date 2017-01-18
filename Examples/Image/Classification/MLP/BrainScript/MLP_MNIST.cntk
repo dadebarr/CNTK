@@ -17,7 +17,7 @@ trainNetwork = {
     BrainScriptNetworkBuilder = {
         imageShape = 28:28:1                        # image dimensions, 1 channel only
         labelDim = 10                               # number of distinct labels
-        featScale = 1/256
+        featScale = 1/255
         Scale{f} = x => Constant(f) .* x
         
         model = Sequential (
