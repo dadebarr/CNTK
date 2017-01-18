@@ -444,8 +444,6 @@
 %apply double INPUT[]  { double *dataBuffer }
 
 %rename (GetAllDevices) CNTK::DeviceDescriptor::AllDevices;
-%rename (GetBestDevice) CNTK::DeviceDescriptor::BestDevice;
-%rename (GetDefaultDevice) CNTK::DeviceDescriptor::DefaultDevice;
 %rename (GetCPUDevice) CNTK::DeviceDescriptor::CPUDevice;
 %rename (GetDeviceType) CNTK::DeviceDescriptor::Type;
 %rename (GetId) CNTK::DeviceDescriptor::Id;
@@ -467,17 +465,7 @@
     {
         get { return GetCPUDevice(); }
     }
-
-    public static DeviceDescriptor DefaultDevice
-    {
-        get { return GetDefaultDevice(); }
-    }
-
-    public static DeviceDescriptor BestDevice
-    {
-        get { return GetBestDevice(); }
-    }
-
+    
     public static System.Collections.Generic.List<DeviceDescriptor> AllDevices
     {
         get {
@@ -663,6 +651,11 @@
 %rename (GetOutput) CNTK::Function::Output;
 %rename (GetOutputs) CNTK::Function::Outputs;
 %rename (GetArguments) CNTK::Function::Arguments;
+%rename (GetOpName) CNTK::Function::Opname;
+%rename (_IsComposite) CNTK::Function::IsComposite;
+%rename (_IsPrimitive) CNTK::Function::IsPrimitive;
+%rename (_IsBlock) CNTK::Function::IsBlock;
+%rename (GetBlockRoot) CNTK::Function::BlockRoot;
 
 %typemap(cscode) CNTK::Function %{
 
@@ -709,6 +702,31 @@
         get { return GetOutput(); }
     }
 
+    public string OpName
+    {
+        get { return GetOpName();
+    }
+
+    public bool IsComposite
+    {
+        get { return _IsComposite(); }
+    }
+
+    public bool IsPrimitive
+    {
+        get { return _IsPrimitive(); }
+    }
+
+    public bool IsBlock
+    {
+        get { return _IsBlock(); }
+    }
+
+    public Function BlockRoot
+    {
+        get { return GetBlockRoot(); }
+    }
+
     public System.Collections.Generic.List<Variable> Arguments
     {
         get 
@@ -733,6 +751,7 @@
         }
         return CNTKLib.Combine(varVect);
     }
+
 %}
 
 %rename (GetShape) CNTK::Variable::Shape;
@@ -764,6 +783,11 @@
 	{
 		get { return GetVariableKind(); }
 	}
+
+    public DataType DataType
+    {
+        get { return GetDataType(); }
+    }
 
 	public System.Collections.Generic.List<Axis> DynamicAxes
 	{
@@ -877,6 +901,8 @@
 %rename (GetRank) CNTK::NDShape::Rank;
 %rename (GetTotalSize) CNTK::NDShape::TotalSize;
 %rename (AreEqualShape) CNTK::operator==(const NDShape& first, const NDShape& second);
+%rename (_IsUnknown) CNTK::NDShape::IsUnknown;
+%rename (_HasInferredDimension) CNTK::NDShape::HasInferredDimension;
 
 %typemap(cscode) CNTK::NDShape %{
     public uint Rank
@@ -895,6 +921,16 @@
             }
             return ret;
         }
+    }
+
+    public bool IsUnknown 
+    {
+        get { return _IsUnknown(); }
+    }
+
+    public bool HasInferredDimension
+    {
+        get { return _HasInferredDimension(); }
     }
 
     public uint TotalSize
