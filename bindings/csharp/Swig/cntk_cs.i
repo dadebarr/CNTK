@@ -466,17 +466,15 @@
         get { return GetCPUDevice(); }
     }
     
-    public static System.Collections.Generic.List<DeviceDescriptor> AllDevices
+    public static System.Collections.Generic.List<DeviceDescriptor> AllDevices()
     {
-        get {
-            var devices = GetAllDevices();
-            var ret = new System.Collections.Generic.List<DeviceDescriptor>(devices.Count);
-            foreach (var d in devices)
-            {
-                ret.Add(d);
-            }
-            return ret;
+        var devices = GetAllDevices();
+        var ret = new System.Collections.Generic.List<DeviceDescriptor>(devices.Count);
+        foreach (var d in devices)
+        {
+            ret.Add(d);
         }
+        return ret;
     }
 
     public override bool Equals(System.Object obj)
@@ -651,11 +649,10 @@
 %rename (GetOutput) CNTK::Function::Output;
 %rename (GetOutputs) CNTK::Function::Outputs;
 %rename (GetArguments) CNTK::Function::Arguments;
-%rename (GetOpName) CNTK::Function::Opname;
+%rename (GetOpName) CNTK::Function::OpName;
 %rename (_IsComposite) CNTK::Function::IsComposite;
 %rename (_IsPrimitive) CNTK::Function::IsPrimitive;
 %rename (_IsBlock) CNTK::Function::IsBlock;
-%rename (GetBlockRoot) CNTK::Function::BlockRoot;
 
 %typemap(cscode) CNTK::Function %{
 
@@ -704,7 +701,7 @@
 
     public string OpName
     {
-        get { return GetOpName();
+        get { return GetOpName(); }
     }
 
     public bool IsComposite
@@ -720,11 +717,6 @@
     public bool IsBlock
     {
         get { return _IsBlock(); }
-    }
-
-    public Function BlockRoot
-    {
-        get { return GetBlockRoot(); }
     }
 
     public System.Collections.Generic.List<Variable> Arguments
